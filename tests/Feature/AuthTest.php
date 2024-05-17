@@ -73,5 +73,19 @@ it('should be return error when required attributes is missing on login', functi
 
 });
 
-todo('should be return error when user is not found');
+it('should be return error when user is not found', function () {
+    $user = User::factory()->create();
+    $response = $this->request('POST', '/api/login', [
+        'email' => $user->email,
+        'password' => $user->password . 'wrong',
+    ]);
+
+    $response->assertStatus(Response::HTTP_UNAUTHORIZED)
+        ->assertJson([
+            'data' => [
+                'message' => 'These credentials do not match our records.',
+            ],
+        ]);
+});
+
 todo('should be return token when user is authenticated');

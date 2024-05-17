@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,6 +27,14 @@ class LoginController extends Controller
                         'errors' => $validator->errors(),
                     ]
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            if (! Auth::attempt($validator->validated())) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'These credentials do not match our records.',
+                    ],
+                ], Response::HTTP_UNAUTHORIZED);
             }
 
             return new JsonResponse([], Response::HTTP_OK);
