@@ -58,6 +58,20 @@ it('should be return success information when user is created successfully', fun
 
 
 // LOGIN
-todo('should be return error when required attributes is missing on login');
+it('should be return error when required attributes is missing on login', function (){
+    $response = $this->request('POST', '/api/login');
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => ['The email field is required.'],
+                    'password' => ['The password field is required.'],
+                ],
+            ]
+        ]);
+
+});
+
 todo('should be return error when user is not found');
 todo('should be return token when user is authenticated');
