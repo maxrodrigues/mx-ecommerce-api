@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ErrorValidatorResource;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +17,7 @@ class RegisterController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:3|max:255',
-                'email' => 'required|email|max:255',
+                'email' => 'required|email|unique:users|max:255',
                 'password' => 'required|confirmed|min:6|max:255',
                 'password_confirmation' => 'required',
             ]);
@@ -30,9 +31,13 @@ class RegisterController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-
-
-            return new JsonResponse([], Response::HTTP_OK);
+            $user = User::create($validator->validated());
+            return new JsonResponse([
+                'data' => [
+                    'message' => 'User created successfully',
+                    'token' => $user->createToken('sale_sync_api')->plainTextToken
+                ]
+            ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()

@@ -34,17 +34,27 @@ it('should be return user when required attributes is valid and user already exi
         'password_confirmation' => 'password',
     ]);
 
-    dd($response->getContent());
-
-    $response->assertStatus(Response::HTTP_OK)
-        ->assertJsonFragment([
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
             'data' => [
-                'message' => 'Found user and Looged in successfully',
-            ]
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'email' => ['The email has already been taken.'],
+                ],
+            ],
         ]);
 });
 
-todo('should be return success information when user is created successfully');
+it('should be return success information when user is created successfully', function (){
+    $response = $this->request('POST', '/api/register', [
+        'name' => 'Test User',
+        'email' => 'w9kCp@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    $response->assertStatus(Response::HTTP_CREATED);
+});
 
 
 // LOGIN
