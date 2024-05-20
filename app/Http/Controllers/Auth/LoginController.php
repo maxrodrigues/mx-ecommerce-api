@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,8 @@ class LoginController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            if (! Auth::attempt($validator->validated())) {
+            $data = $validator->validated();
+            if (!Auth::attempt($data)) {
                 return new JsonResponse([
                     'data' => [
                         'message' => 'These credentials do not match our records.',
@@ -37,7 +39,14 @@ class LoginController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            return new JsonResponse([], Response::HTTP_OK);
+            $user = User::where('email', $request->email)->first();
+
+            return new JsonResponse([
+                'data' => [
+                    'message' => 'Successfully logged in.',
+                    'token' => $user->createToken($request->email)->plainTextToken,
+                ],
+            ], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()

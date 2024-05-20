@@ -77,7 +77,7 @@ it('should be return error when user is not found', function () {
     $user = User::factory()->create();
     $response = $this->request('POST', '/api/login', [
         'email' => $user->email,
-        'password' => $user->password . 'wrong',
+        'password' => 'password is wrong',
     ]);
 
     $response->assertStatus(Response::HTTP_UNAUTHORIZED)
@@ -88,4 +88,13 @@ it('should be return error when user is not found', function () {
         ]);
 });
 
-todo('should be return token when user is authenticated');
+it('should be return token when user is authenticated', function () {
+    $user = User::factory()->create();
+    $response = $this->request('POST', '/api/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertStatus(Response::HTTP_OK);
+    $this->assertDatabaseCount('personal_access_tokens', 1);
+});
