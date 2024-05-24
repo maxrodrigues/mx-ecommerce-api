@@ -11,9 +11,16 @@ class CategoryController extends Controller
 {
     public function index(): JsonResponse
     {
-        $categories = Category::all();
+        $categories = Category::all()->toArray();
+        if (! $categories) {
+            $message = 'No categories found';
+        }
+
         return new JsonResponse([
-            'data' => $categories
+            'data' => [
+                'categories' => $categories,
+                'message' => $message ?? 'Categories list retrieved successfully',
+            ],
         ], Response::HTTP_OK);
     }
 }
