@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -28,7 +29,7 @@ class CategoryController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = Validator::make($request->all(), [
-            'name' => 'required|min:3|max:255',
+            'name' => 'required|min:3|max:255|unique:categories',
         ]);
 
         if ($data->fails()) {

@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
+// LIST
 it ('only registered user can view list of categories', function () {
     $response = $this->request('GET', '/api/categories');
     $response->assertStatus(Response::HTTP_UNAUTHORIZED);
@@ -38,6 +39,7 @@ it ('return default message when there are no categories registered', function (
         ]);
 });
 
+//STORE
 it ('return success when category is created successfully', function () {
     $user = User::factory()->create();
     $response = $this->actingAs($user)->request('POST', '/api/categories', [
@@ -67,3 +69,21 @@ it ('return error when required attributes is not send', function () {
             ],
         ]);
 });
+
+it ('returns an error when trying to register a category already registered exists', function () {
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+        $response = $this->actingAs($user)->request('POST', '/api/categories', [
+            'name' => $category->name,
+            'description' => 'Category Description',
+        ]);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJson([
+                'data' => [
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'name' => ['The name has already been taken.'],
+                    ]
+                ],
+            ]);
+    });
