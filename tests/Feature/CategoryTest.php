@@ -37,3 +37,33 @@ it ('return default message when there are no categories registered', function (
             ],
         ]);
 });
+
+it ('return success when category is created successfully', function () {
+    $user = User::factory()->create();
+    $response = $this->actingAs($user)->request('POST', '/api/categories', [
+        'name' => 'Category Test',
+        'description' => 'Category Description',
+    ]);
+    $response->assertStatus(Response::HTTP_CREATED)
+        ->assertJson([
+            'data' => [
+                'message' => 'Category created successfully',
+            ]
+        ]);
+
+    $this->assertDatabaseCount('categories', 1);
+});
+
+it ('return error when required attributes is not send', function () {
+    $user = User::factory()->create();
+    $response = $this->actingAs($user)->request('POST', '/api/categories');
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'name' => ['The name field is required.'],
+                ]
+            ],
+        ]);
+});
