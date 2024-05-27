@@ -39,6 +39,26 @@ it ('return default message when there are no categories registered', function (
         ]);
 });
 
+it ('returns all categories linked to the parent category', function () {
+    $user = User::factory()->create();
+    $parent = Category::factory(1)->create();
+    $parentId = $parent->first()->id;
+    $categories = Category::factory(4)->create([
+        'parent_id' => $parentId
+    ]);
+    $response = $this->actingAs($user)->request('GET', '/api/categories', [
+        'parent_id' => $parentId
+    ]);
+
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'categories' => $categories->toArray(),
+                'message' => 'Categories list retrieved successfully',
+            ]
+        ]);
+});
+
 //STORE
 it ('return success when category is created successfully', function () {
     $user = User::factory()->create();

@@ -11,17 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $categories = Category::all()->toArray();
-        if (! $categories) {
-            $message = 'No categories found';
-        }
+        $categories = Category::query()
+            ->when($request->parent_id, function ($query) use ($request) {
+                $query->where('parent_id', $request->parent_id);
+            })
+            ->get()
+            ->toArray();
 
         return new JsonResponse([
             'data' => [
                 'categories' => $categories,
-                'message' => $message ?? 'Categories list retrieved successfully',
+                'message' => empty($categories) ? 'No categories found' : 'Categories list retrieved successfully',
             ],
         ], Response::HTTP_OK);
     }
