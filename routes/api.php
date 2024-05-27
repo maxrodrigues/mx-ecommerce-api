@@ -12,5 +12,6 @@ Route::post('login', LoginController::class);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('categories', CategoryController::class);
+    Route::resource('products', \App\Http\Controllers\ProductController::class);
 });
 
