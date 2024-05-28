@@ -74,9 +74,25 @@ it('should be return error when product not found', function () {
         ]);
 });
 
-todo('should be must search for products by name');
-todo('should be must search for products by ean');
-todo('should be return products when search by category');
+it ('should be return products when search by category', function () {
+    setUser();
+    $category = \App\Models\Category::factory()->create();
+    $products = createProduct(2, [
+        'category_id' => $category->first()->id,
+    ]);
+
+    $response = $this->request('GET', '/api/products-by-category', [
+        'category' => $category->first()->id,
+    ]);
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'products' => $products->toArray(),
+                'message' => 'Products list retrieved successfully',
+            ],
+        ]);
+});
+
 todo('return success when receiving all the attributes necessary to register the product');
 todo('return error when required attributes are not sent');
 todo('return error when trying to register a product already registered exists');
