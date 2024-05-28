@@ -21,6 +21,7 @@ class ProductFactory extends Factory
             'category_id' => Category::factory(),
             'name' => fake()->name(),
             'slug' => fake()->slug(),
+            'sku' => fake()->ean13(),
             'description' => fake()->text(),
             'price' => fake()->numberBetween(1, 1000),
             'stock' => fake()->numberBetween(1, 100),
