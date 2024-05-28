@@ -1,0 +1,22 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger SaleSync API",
+        "description": "API documentation for SaleSync",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/products": {
+            "get": {
+                "summary": "Get all products",
+                "description": "Returns all registered products",
+                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}
