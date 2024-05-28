@@ -2,7 +2,6 @@
 
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
-
 use function Pest\Laravel\actingAs;
 
 function setUser(): void
@@ -16,6 +15,7 @@ function createProduct($qtd = 1, $attributes = [])
     return \App\Models\Product::factory($qtd)->create($attributes);
 }
 
+//LIST
 it('only registered user can access list of products', function () {
     $response = $this->request('GET', '/api/products');
     $response->assertStatus(Response::HTTP_UNAUTHORIZED);
@@ -93,8 +93,46 @@ it ('should be return products when search by category', function () {
         ]);
 });
 
-todo('return success when receiving all the attributes necessary to register the product');
-todo('return error when required attributes are not sent');
+//STORE
+it ('return success when receiving all the attributes necessary to register the product', function () {
+    setUser();
+    $category = \App\Models\Category::factory()->create();
+    $response = $this->request('POST', '/api/products', [
+        'category_id' => $category->first()->id,
+        'name' => 'Product Test',
+        'description' => 'Product Description',
+        'sku' => '1234567890123',
+        'price' => 1000,
+        'stock' => 100,
+    ]);
+
+    $response->assertStatus(Response::HTTP_CREATED)
+        ->assertJson([
+            'data' => [
+                'message' => 'Product created successfully',
+            ],
+        ]);
+});
+
+it ('return error when required attributes are not sent', function () {
+    setUser();
+    $response = $this->request('POST', '/api/products');
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'category_id' => ['The category id field is required.'],
+                    'name' => ['The name field is required.'],
+                    'description' => ['The description field is required.'],
+                    'sku' => ['The sku field is required.'],
+                    'price' => ['The price field is required.'],
+                    'stock' => ['The stock field is required.'],
+                ],
+            ]
+        ]);
+});
+
 todo('return error when trying to register a product already registered exists');
 todo('return success and product detail when updated successfully');
 todo('should return an error when the product is not updated');

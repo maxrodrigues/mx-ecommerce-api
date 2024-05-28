@@ -3,9 +3,9 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductDetailController;
 use App\Http\Controllers\Product\ProductsByCategoryController;
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', RegisterController::class);
