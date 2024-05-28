@@ -133,7 +133,22 @@ it ('return error when required attributes are not sent', function () {
         ]);
 });
 
-todo('return error when trying to register a product already registered exists');
+it ('return error when trying to register a product already exists', function () {
+    setUser();
+    $product = createProduct();
+
+    $response = $this->request('POST', '/api/products', $product->first()->toArray());
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'sku' => ['The sku has already been taken.'],
+                ],
+            ]
+        ]);
+});
+
 todo('return success and product detail when updated successfully');
 todo('should return an error when the product is not updated');
 todo('should return success when the product is deleted successfully');

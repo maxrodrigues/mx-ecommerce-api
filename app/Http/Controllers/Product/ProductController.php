@@ -54,7 +54,7 @@ class ProductController extends Controller
                 'name' => 'required|min:3|max:255',
                 'description' => 'required|min:3|max:255',
                 'category_id' => 'required|exists:categories,id',
-                'sku' => 'required|min:3|max:255',
+                'sku' => 'required|min:3|max:255|unique:products,sku',
                 'price' => 'required|numeric',
                 'stock' => 'required|numeric',
             ]);
