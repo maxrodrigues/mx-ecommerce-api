@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -46,13 +45,13 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
             'slug' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
         ]);
 
         return new JsonResponse([
             'data' => [
                 'message' => 'Category created successfully',
-            ]
+            ],
         ], Response::HTTP_CREATED);
     }
 }

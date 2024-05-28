@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,6 +15,7 @@ class ProductController extends Controller
      *     path="/api/products",
      *     summary="Get all products",
      *     description="Returns all registered products",
+     *
      *     @OA\Response(
      *         response="200",
      *         description="OK",

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,12 +25,12 @@ class LoginController extends Controller
                     'data' => [
                         'message' => 'The given data was invalid.',
                         'errors' => $validator->errors(),
-                    ]
+                    ],
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $data = $validator->validated();
-            if (!Auth::attempt($data)) {
+            if (! Auth::attempt($data)) {
                 return new JsonResponse([
                     'data' => [
                         'message' => 'These credentials do not match our records.',
@@ -49,7 +48,7 @@ class LoginController extends Controller
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }

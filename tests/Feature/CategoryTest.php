@@ -5,7 +5,7 @@ use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
 
 // LIST
-it ('only registered user can view list of categories', function () {
+it('only registered user can view list of categories', function () {
     $response = $this->request('GET', '/api/categories');
     $response->assertStatus(Response::HTTP_UNAUTHORIZED);
 
@@ -14,7 +14,7 @@ it ('only registered user can view list of categories', function () {
     $response->assertStatus(Response::HTTP_OK);
 });
 
-it ('return list of categories', function () {
+it('return list of categories', function () {
     $user = User::factory()->create();
     $categories = Category::factory(10)->create();
     $response = $this->actingAs($user)->request('GET', '/api/categories');
@@ -23,31 +23,31 @@ it ('return list of categories', function () {
             'data' => [
                 'categories' => $categories->toArray(),
                 'message' => 'Categories list retrieved successfully',
-            ]
+            ],
         ]);
 });
 
-it ('return default message when there are no categories registered', function () {
+it('return default message when there are no categories registered', function () {
     $user = User::factory()->create();
     $response = $this->actingAs($user)->request('GET', '/api/categories');
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
                 'categories' => [],
-                'message' => 'No categories found'
+                'message' => 'No categories found',
             ],
         ]);
 });
 
-it ('returns all categories linked to the parent category', function () {
+it('returns all categories linked to the parent category', function () {
     $user = User::factory()->create();
     $parent = Category::factory(1)->create();
     $parentId = $parent->first()->id;
     $categories = Category::factory(4)->create([
-        'parent_id' => $parentId
+        'parent_id' => $parentId,
     ]);
     $response = $this->actingAs($user)->request('GET', '/api/categories', [
-        'parent_id' => $parentId
+        'parent_id' => $parentId,
     ]);
 
     $response->assertStatus(Response::HTTP_OK)
@@ -55,12 +55,12 @@ it ('returns all categories linked to the parent category', function () {
             'data' => [
                 'categories' => $categories->toArray(),
                 'message' => 'Categories list retrieved successfully',
-            ]
+            ],
         ]);
 });
 
 //STORE
-it ('return success when category is created successfully', function () {
+it('return success when category is created successfully', function () {
     $user = User::factory()->create();
     $response = $this->actingAs($user)->request('POST', '/api/categories', [
         'name' => 'Category Test',
@@ -70,13 +70,13 @@ it ('return success when category is created successfully', function () {
         ->assertJson([
             'data' => [
                 'message' => 'Category created successfully',
-            ]
+            ],
         ]);
 
     $this->assertDatabaseCount('categories', 1);
 });
 
-it ('return error when required attributes is not send', function () {
+it('return error when required attributes is not send', function () {
     $user = User::factory()->create();
     $response = $this->actingAs($user)->request('POST', '/api/categories');
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -85,25 +85,25 @@ it ('return error when required attributes is not send', function () {
                 'message' => 'The given data was invalid.',
                 'errors' => [
                     'name' => ['The name field is required.'],
-                ]
+                ],
             ],
         ]);
 });
 
-it ('returns an error when trying to register a category already registered exists', function () {
-        $user = User::factory()->create();
-        $category = Category::factory()->create();
-        $response = $this->actingAs($user)->request('POST', '/api/categories', [
-            'name' => $category->name,
-            'description' => 'Category Description',
-        ]);
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->assertJson([
-                'data' => [
-                    'message' => 'The given data was invalid.',
-                    'errors' => [
-                        'name' => ['The name has already been taken.'],
-                    ]
+it('returns an error when trying to register a category already registered exists', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->create();
+    $response = $this->actingAs($user)->request('POST', '/api/categories', [
+        'name' => $category->name,
+        'description' => 'Category Description',
+    ]);
+    $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'name' => ['The name has already been taken.'],
                 ],
-            ]);
-    });
+            ],
+        ]);
+});

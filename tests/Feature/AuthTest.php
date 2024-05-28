@@ -45,7 +45,7 @@ it('should be return user when required attributes is valid and user already exi
         ]);
 });
 
-it('should be return success information when user is created successfully', function (){
+it('should be return success information when user is created successfully', function () {
     $response = $this->request('POST', '/api/register', [
         'name' => 'Test User',
         'email' => 'w9kCp@example.com',
@@ -56,9 +56,8 @@ it('should be return success information when user is created successfully', fun
     $response->assertStatus(Response::HTTP_CREATED);
 });
 
-
 // LOGIN
-it('should be return error when required attributes is missing on login', function (){
+it('should be return error when required attributes is missing on login', function () {
     $response = $this->request('POST', '/api/login');
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
         ->assertJson([
@@ -68,7 +67,7 @@ it('should be return error when required attributes is missing on login', functi
                     'email' => ['The email field is required.'],
                     'password' => ['The password field is required.'],
                 ],
-            ]
+            ],
         ]);
 
 });

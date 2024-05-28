@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,15 +31,16 @@ class RegisterController extends Controller
             }
 
             $user = User::create($validator->validated());
+
             return new JsonResponse([
                 'data' => [
                     'message' => 'User created successfully',
-                    'token' => $user->createToken('sale_sync_api')->plainTextToken
-                ]
+                    'token' => $user->createToken('sale_sync_api')->plainTextToken,
+                ],
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
