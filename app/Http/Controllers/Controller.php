@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 
-/**
- * @OA\OpenApi(
- *
- *     @OA\Info(
- *         version="1.0.0",
- *         title="Swagger SaleSync API",
- *         description="API documentation for SaleSync",
- *     ),
- * )
- */
+#[
+    OA\Info(version: "1.0.0", description: "API documentation for SaleSync", title: "SaleSync API",),
+    OA\SecurityScheme(securityScheme: "bearerAuth", type: "http", name: "Authorization", in: "header", scheme: "bearer"),
+]
 abstract class Controller
 {
     //

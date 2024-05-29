@@ -9,23 +9,25 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/products",
-     *     summary="Get all products",
-     *     description="Returns all registered products",
-     *
-     *     @OA\Response(
-     *         response="200",
-     *         description="OK",
-     *     ),
-     * )
-     */
+    #[OA\Get(
+        path: '/api/products',
+        description: 'Get all products',
+        summary: 'Get all products',
+        security: [
+            [
+                'bearerAuth' => []
+            ]
+        ],
+        tags: ['Product'],
+        responses: [
+            new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+        ]
+    )]
     public function index(): JsonResponse
     {
         try {
@@ -47,6 +49,34 @@ class ProductController extends Controller
         }
     }
 
+    #[OA\Post(
+        path: '/api/products',
+        description: 'Create a new product',
+        summary: 'Create a new product',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: "application/json",
+                schema: new OA\Schema(
+                    required: ["name", "description", "category_id", "sku", "price", "stock"],
+                    properties: [
+                        new OA\Property(property: "name", description: "Product name", type: "string", example: "Product Test"),
+                        new OA\Property(property: "description", description: "Product description", type: "string", example: "Product description"),
+                        new OA\Property(property: "category_id", description: "Product category id", type: "integer", example: 1),
+                        new OA\Property(property: "sku", description: "Product sku", type: "string", example: "product-test"),
+                        new OA\Property(property: "price", description: "Product price", type: "number", example: 10.00),
+                        new OA\Property(property: "stock", description: "Product stock", type: "integer", example: 10),
+                    ]
+                )
+            )
+        ),
+        tags: ["Product"],
+        responses: [
+            new OA\Response(response: Response::HTTP_CREATED, description: 'Created'),
+            new OA\Response(response: Response::HTTP_UNPROCESSABLE_ENTITY, description: 'Unprocessable Entity'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal Server Error'),
+        ]
+    )]
     public function store(Request $request): JsonResponse
     {
         try {
