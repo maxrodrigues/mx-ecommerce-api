@@ -131,18 +131,16 @@ class ProductController extends Controller
                 ->where('sku', $sku)
                 ->first();
 
-            $product->fill($request->all());
-            $product->save();
-
-            /*if (! $update) {
+            if (! $product) {
                 return new JsonResponse([
                     'data' => [
                         'message' => 'Product not found or not updated',
                     ]
                 ], Response::HTTP_NOT_FOUND);
-            }*/
+            }
 
-
+            $product->fill($request->all());
+            $product->save();
 
             return new JsonResponse([
                 'data' => [

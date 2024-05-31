@@ -166,6 +166,23 @@ it ('return success and product detail when updated successfully', function () {
     $this->assertDatabaseHas('products', $attributes);
 });
 
-todo('should return an error when the product is not updated');
+it ('should return an error when the product is not updated', function () {
+    setUser();
+    $product = createProduct();
+    $attributes = [
+        'name' => 'Product Test Update',
+        'description' => 'Product Description Update',
+        'sku' => '1234567890123',
+        'price' => 99999,
+        'stock' => 9,
+    ];
+    $response = $this->request('PUT', '/api/products/1234567890125', $attributes);
+    $response->assertStatus(Response::HTTP_NOT_FOUND)
+        ->assertJson([
+            'data' => [
+                'message' => 'Product not found or not updated',
+            ],
+        ]);
+});
 todo('should return success when the product is deleted successfully');
 todo('should return an error when the product is not deleted');
