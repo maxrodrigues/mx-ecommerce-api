@@ -193,18 +193,40 @@
                     "500": {
                         "description": "Internal Server Error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/product-detail": {
             "get": {
+                "tags": [
+                    "Product"
+                ],
                 "description": "Returns the details of a product",
                 "operationId": "5a3b16604c5bf2aedb50ece076ae7aee",
+                "parameters": [
+                    {
+                        "parameter": "sku",
+                        "name": "sku",
+                        "in": "query",
+                        "description": "Product sku",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

@@ -7,27 +7,27 @@ use App\Models\Product;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
+use OpenApi\Attributes as OA;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductDetailController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/product-detail",
-     *     description="Returns the details of a product",
-     *
-     *     @OA\Parameter(
-     *         name="sku",
-     *         in="body",
-     *     ),
-     *
-     *     @OA\Response(
-     *         response="200",
-     *         description="OK",
-     *     )
-     * )
-     */
+    #[OA\Get(
+        path: '/api/product-detail',
+        description: 'Returns the details of a product',
+        security: [
+            [
+                'bearerAuth' => []
+            ]
+        ],
+        tags: ['Product'],
+        parameters: [
+            new OA\Parameter(parameter: "sku", name: "sku", description: "Product sku", in: "query", required: true),
+        ],
+        responses: [
+            new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+        ]
+    )]
     public function __invoke(Request $request): JsonResponse
     {
         try {

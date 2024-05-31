@@ -53,6 +53,11 @@ class ProductController extends Controller
         path: '/api/products',
         description: 'Create a new product',
         summary: 'Create a new product',
+        security: [
+            [
+                'bearerAuth' => []
+            ]
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
