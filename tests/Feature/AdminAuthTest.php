@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Admin;
 use Symfony\Component\HttpFoundation\Response;
 
 it ('should be return success when create new admin user', function () {
@@ -29,9 +30,9 @@ it ('should be return error when required attributes is missing on register', fu
 });
 
 it ('should be return success when admin sign in successfully', function () {
-    $admin = \App\Models\Admin::factory()->create();
+    $admin = Admin::factory()->create();
     $response = $this->request('POST', '/api/admin/login', [
-        'email' => 'admin@example.com',
+        'email' => $admin->first()->email,
         'password' => 'password',
     ]);
 
