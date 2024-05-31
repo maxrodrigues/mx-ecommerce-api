@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
 
+Route::post('admin/login', \App\Http\Controllers\Auth\AdminAuthController::class);
+Route::post('admin/register', \App\Http\Controllers\Auth\AdminRegisterController::class);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
