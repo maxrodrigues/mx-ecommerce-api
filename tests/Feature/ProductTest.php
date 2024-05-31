@@ -62,9 +62,7 @@ it('should be return error when product not found', function () {
     createProduct(1, [
         'sku' => '1234567890123',
     ]);
-    $response = $this->request('GET', '/api/product-detail', [
-        'sku' => '1234567890125',
-    ]);
+    $response = $this->request('GET', '/api/product-detail/1234567890125');
     $response->assertStatus(Response::HTTP_NOT_FOUND)
         ->assertJson([
             'data' => [
