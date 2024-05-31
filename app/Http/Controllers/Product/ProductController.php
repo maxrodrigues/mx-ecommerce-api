@@ -124,6 +124,22 @@ class ProductController extends Controller
         }
     }
 
+    #[OA\Put(
+        path: '/api/products/{sku}',
+        description: 'Update a product',
+        summary: 'Update a product',
+        security: [
+            [
+                'bearerAuth' => []
+            ]
+        ],
+        tags: ['Product'],
+        responses: [
+            new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+            new OA\Response(response: Response::HTTP_NOT_FOUND, description: 'Not Found'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal Server Error'),
+        ]
+    )]
     public function update(Request $request, $sku): JsonResponse
     {
         try {
@@ -166,6 +182,22 @@ class ProductController extends Controller
         }
     }
 
+    #[OA\Delete(
+        path: '/api/products/{sku}',
+        description: 'Delete a product',
+        summary: 'Delete a product',
+        security: [
+            [
+                'bearerAuth' => []
+            ]
+        ],
+        tags: ['Product'],
+        responses: [
+            new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+            new OA\Response(response: Response::HTTP_NOT_FOUND, description: 'Not Found'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal Server Error'),
+        ]
+    )]
     public function destroy($sku): JsonResponse
     {
         try {
