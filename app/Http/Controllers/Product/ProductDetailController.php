@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductDetailController extends Controller
 {
     #[OA\Get(
-        path: '/api/product-detail',
+        path: '/api/product-detail/{sku}',
         description: 'Returns the details of a product',
         security: [
             [
@@ -21,11 +21,10 @@ class ProductDetailController extends Controller
             ]
         ],
         tags: ['Product'],
-        parameters: [
-            new OA\Parameter(parameter: "sku", name: "sku", description: "Product sku", in: "query", required: true),
-        ],
         responses: [
             new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+            new OA\Response(response: Response::HTTP_NOT_FOUND, description: 'Product not found'),
+            new OA\Response(response: Response::HTTP_INTERNAL_SERVER_ERROR, description: 'Internal Server Error'),
         ]
     )]
     public function __invoke(Request $request, $sku): JsonResponse
