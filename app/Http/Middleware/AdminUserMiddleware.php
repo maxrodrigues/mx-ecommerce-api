@@ -20,7 +20,7 @@ class AdminUserMiddleware
             return new JsonResponse([
                 'data' => [
                     'message' => 'Unauthorized',
-                ]
+                ],
             ], Response::HTTP_UNAUTHORIZED);
         }
 

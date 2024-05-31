@@ -17,7 +17,7 @@ function createProduct($qtd = 1, $attributes = [])
 }
 
 //LIST
-it ('only registered user can access list of products', function () {
+it('only registered user can access list of products', function () {
     $response = $this->request('GET', '/api/products');
     $response->assertStatus(Response::HTTP_UNAUTHORIZED);
 
@@ -27,7 +27,7 @@ it ('only registered user can access list of products', function () {
     $response->assertStatus(Response::HTTP_OK);
 });
 
-it ('returns all registered products', function () {
+it('returns all registered products', function () {
     $user = User::factory()->create();
     $products = \App\Models\Product::factory(10)->create();
     $response = $this->actingAs($user)->request('GET', '/api/products');
@@ -40,7 +40,7 @@ it ('returns all registered products', function () {
         ]);
 });
 
-it ('should return the details of a product', function () {
+it('should return the details of a product', function () {
     setUser();
     $product = createProduct(1, [
         'sku' => '1234567890123',
@@ -57,7 +57,7 @@ it ('should return the details of a product', function () {
         ]);
 });
 
-it ('should be return error when product not found', function () {
+it('should be return error when product not found', function () {
     setUser();
     createProduct(1, [
         'sku' => '1234567890123',
@@ -71,14 +71,14 @@ it ('should be return error when product not found', function () {
         ]);
 });
 
-it ('should be return products when search by category', function () {
+it('should be return products when search by category', function () {
     setUser();
     $category = \App\Models\Category::factory()->create();
     $products = createProduct(2, [
         'category_id' => $category->first()->id,
     ]);
 
-    $response = $this->request('GET', '/api/products-by-category/' . $category->first()->id);
+    $response = $this->request('GET', '/api/products-by-category/'.$category->first()->id);
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
@@ -89,7 +89,7 @@ it ('should be return products when search by category', function () {
 });
 
 //STORE
-it ('return success when receiving all the attributes necessary to register the product', function () {
+it('return success when receiving all the attributes necessary to register the product', function () {
     setUser();
     $category = \App\Models\Category::factory()->create();
     $response = $this->request('POST', '/api/products', [
@@ -109,7 +109,7 @@ it ('return success when receiving all the attributes necessary to register the 
         ]);
 });
 
-it ('return error when required attributes are not sent', function () {
+it('return error when required attributes are not sent', function () {
     setUser();
     $response = $this->request('POST', '/api/products');
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -128,7 +128,7 @@ it ('return error when required attributes are not sent', function () {
         ]);
 });
 
-it ('return error when trying to register a product already exists', function () {
+it('return error when trying to register a product already exists', function () {
     setUser();
     $product = createProduct();
 
@@ -145,7 +145,7 @@ it ('return error when trying to register a product already exists', function ()
 });
 
 //UPDATE
-it ('return success and product detail when updated successfully', function () {
+it('return success and product detail when updated successfully', function () {
     setUser();
     $product = createProduct();
     $attributes = [
@@ -155,18 +155,18 @@ it ('return success and product detail when updated successfully', function () {
         'price' => 99999,
         'stock' => 9,
     ];
-    $response = $this->request('PUT', '/api/products/' . $product->first()->sku, $attributes);
+    $response = $this->request('PUT', '/api/products/'.$product->first()->sku, $attributes);
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
                 'message' => 'Product updated successfully',
-                'product' => $attributes
+                'product' => $attributes,
             ],
         ]);
     $this->assertDatabaseHas('products', $attributes);
 });
 
-it ('should return an error when the product is not updated', function () {
+it('should return an error when the product is not updated', function () {
     setUser();
     $product = createProduct();
     $attributes = [
@@ -186,10 +186,10 @@ it ('should return an error when the product is not updated', function () {
 });
 
 //DELETE
-it ('should return success when the product is deleted successfully', function () {
+it('should return success when the product is deleted successfully', function () {
     setUser();
     $product = createProduct();
-    $response = $this->request('DELETE', '/api/products/' . $product->first()->sku);
+    $response = $this->request('DELETE', '/api/products/'.$product->first()->sku);
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
@@ -199,7 +199,7 @@ it ('should return success when the product is deleted successfully', function (
     $this->assertDatabaseMissing('products', $product->first()->toArray());
 });
 
-it ('should return an error when the product is not deleted', function () {
+it('should return an error when the product is not deleted', function () {
     setUser();
     $response = $this->request('DELETE', '/api/products/1234567890125');
     $response->assertStatus(Response::HTTP_NOT_FOUND)

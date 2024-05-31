@@ -25,17 +25,17 @@ class AdminAuthController extends Controller
                 return new JsonResponse([
                     'data' => [
                         'message' => $data->errors(),
-                    ]
+                    ],
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $admin = Admin::where('email', $request->email)->first();
 
-            if (!$admin || ! Hash::check($request->password, $admin->password)) {
+            if (! $admin || ! Hash::check($request->password, $admin->password)) {
                 return new JsonResponse([
                     'data' => [
                         'message' => 'The provided credentials are incorrect.',
-                    ]
+                    ],
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
@@ -43,13 +43,13 @@ class AdminAuthController extends Controller
                 'data' => [
                     'admin' => $admin,
                     'token' => $admin->createToken('SaleSync Admin', ['role:admin'])->plainTextToken,
-                ]
+                ],
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             return new JsonResponse([
                 'data' => [
                     'message' => $e->getMessage(),
-                ]
+                ],
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

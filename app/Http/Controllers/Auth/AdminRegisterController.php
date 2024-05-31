@@ -27,7 +27,7 @@ class AdminRegisterController extends Controller
                     'data' => [
                         'message' => 'The given data was invalid.',
                         'errors' => $data->errors(),
-                    ]
+                    ],
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
@@ -40,13 +40,13 @@ class AdminRegisterController extends Controller
             return new JsonResponse([
                 'data' => [
                     'message' => 'Admin created successfully',
-                ]
+                ],
             ], Response::HTTP_CREATED);
         } catch (Exception $e) {
             return new JsonResponse([
                 'date' => [
                     'message' => $e->getMessage(),
-                ]
+                ],
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

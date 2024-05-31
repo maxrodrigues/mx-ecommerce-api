@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use OpenApi\Attributes as OA;
@@ -20,8 +20,8 @@ class ProductController extends Controller
         summary: 'Get all products',
         security: [
             [
-                'bearerAuth' => []
-            ]
+                'bearerAuth' => [],
+            ],
         ],
         tags: ['Product'],
         responses: [
@@ -55,27 +55,27 @@ class ProductController extends Controller
         summary: 'Create a new product',
         security: [
             [
-                'bearerAuth' => []
-            ]
+                'bearerAuth' => [],
+            ],
         ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
-                mediaType: "application/json",
+                mediaType: 'application/json',
                 schema: new OA\Schema(
-                    required: ["name", "description", "category_id", "sku", "price", "stock"],
+                    required: ['name', 'description', 'category_id', 'sku', 'price', 'stock'],
                     properties: [
-                        new OA\Property(property: "name", description: "Product name", type: "string", example: "Product Test"),
-                        new OA\Property(property: "description", description: "Product description", type: "string", example: "Product description"),
-                        new OA\Property(property: "category_id", description: "Product category id", type: "integer", example: 1),
-                        new OA\Property(property: "sku", description: "Product sku", type: "string", example: "product-test"),
-                        new OA\Property(property: "price", description: "Product price", type: "number", example: 10.00),
-                        new OA\Property(property: "stock", description: "Product stock", type: "integer", example: 10),
+                        new OA\Property(property: 'name', description: 'Product name', type: 'string', example: 'Product Test'),
+                        new OA\Property(property: 'description', description: 'Product description', type: 'string', example: 'Product description'),
+                        new OA\Property(property: 'category_id', description: 'Product category id', type: 'integer', example: 1),
+                        new OA\Property(property: 'sku', description: 'Product sku', type: 'string', example: 'product-test'),
+                        new OA\Property(property: 'price', description: 'Product price', type: 'number', example: 10.00),
+                        new OA\Property(property: 'stock', description: 'Product stock', type: 'integer', example: 10),
                     ]
                 )
             )
         ),
-        tags: ["Product"],
+        tags: ['Product'],
         responses: [
             new OA\Response(response: Response::HTTP_CREATED, description: 'Created'),
             new OA\Response(response: Response::HTTP_UNPROCESSABLE_ENTITY, description: 'Unprocessable Entity'),
@@ -130,8 +130,8 @@ class ProductController extends Controller
         summary: 'Update a product',
         security: [
             [
-                'bearerAuth' => []
-            ]
+                'bearerAuth' => [],
+            ],
         ],
         tags: ['Product'],
         responses: [
@@ -160,7 +160,7 @@ class ProductController extends Controller
                 return new JsonResponse([
                     'data' => [
                         'message' => 'Product not found or not updated',
-                    ]
+                    ],
                 ], Response::HTTP_NOT_FOUND);
             }
 
@@ -171,13 +171,13 @@ class ProductController extends Controller
                 'data' => [
                     'message' => 'Product updated successfully',
                     'product' => $product->toArray(),
-                ]
+                ],
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             return new JsonResponse([
                 'data' => [
                     'message' => $e->getMessage(),
-                ]
+                ],
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -188,8 +188,8 @@ class ProductController extends Controller
         summary: 'Delete a product',
         security: [
             [
-                'bearerAuth' => []
-            ]
+                'bearerAuth' => [],
+            ],
         ],
         tags: ['Product'],
         responses: [
@@ -209,20 +209,20 @@ class ProductController extends Controller
                 return new JsonResponse([
                     'data' => [
                         'message' => 'Product not found or not deleted',
-                    ]
+                    ],
                 ], Response::HTTP_NOT_FOUND);
             }
 
             return new JsonResponse([
                 'data' => [
                     'message' => 'Product deleted successfully',
-                ]
+                ],
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             return new JsonResponse([
                 'data' => [
                     'message' => $e->getMessage(),
-                ]
+                ],
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

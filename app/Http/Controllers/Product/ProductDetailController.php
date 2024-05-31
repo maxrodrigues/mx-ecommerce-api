@@ -17,8 +17,8 @@ class ProductDetailController extends Controller
         description: 'Returns the details of a product',
         security: [
             [
-                'bearerAuth' => []
-            ]
+                'bearerAuth' => [],
+            ],
         ],
         tags: ['Product'],
         responses: [

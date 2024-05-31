@@ -14,26 +14,26 @@ use Symfony\Component\HttpFoundation\Response;
 class LoginController extends Controller
 {
     #[OA\Post(
-        path: "api/login",
-        summary: "Login",
+        path: 'api/login',
+        summary: 'Login',
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\MediaType(
-                mediaType: "application/json",
+                mediaType: 'application/json',
                 schema: new OA\Schema(
-                    required: ["email", "password"],
+                    required: ['email', 'password'],
                     properties: [
-                        new OA\Property(property: "email", description: "User e-mail", type: "string", example: "example@example"),
-                        new OA\Property(property: "password", description: "User password", type: "string", example: "password"),
+                        new OA\Property(property: 'email', description: 'User e-mail', type: 'string', example: 'example@example'),
+                        new OA\Property(property: 'password', description: 'User password', type: 'string', example: 'password'),
                     ]
                 )
             )
         ),
-        tags: ["Auth"],
+        tags: ['Auth'],
         responses: [
-            new OA\Response(response: Response::HTTP_OK, description: "OK"),
-            new OA\Response(response: Response::HTTP_UNAUTHORIZED, description: "Unauthorized"),
-            new OA\Response(response: Response::HTTP_UNPROCESSABLE_ENTITY, description: "Unprocessable Entity"),
+            new OA\Response(response: Response::HTTP_OK, description: 'OK'),
+            new OA\Response(response: Response::HTTP_UNAUTHORIZED, description: 'Unauthorized'),
+            new OA\Response(response: Response::HTTP_UNPROCESSABLE_ENTITY, description: 'Unprocessable Entity'),
         ]
     )]
     public function __invoke(Request $request): JsonResponse

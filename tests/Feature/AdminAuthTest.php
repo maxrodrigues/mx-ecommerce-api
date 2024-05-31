@@ -3,7 +3,7 @@
 use App\Models\Admin;
 use Symfony\Component\HttpFoundation\Response;
 
-it ('should be return success when create new admin user', function () {
+it('should be return success when create new admin user', function () {
     $response = $this->request('POST', '/api/admin/register', [
         'name' => 'Test Admin User',
         'email' => 'admin@example.com',
@@ -14,7 +14,7 @@ it ('should be return success when create new admin user', function () {
     $response->assertStatus(Response::HTTP_CREATED);
 });
 
-it ('should be return error when required attributes is missing on register', function () {
+it('should be return error when required attributes is missing on register', function () {
     $response = $this->request('POST', '/api/admin/register');
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     $response->assertJson([
@@ -29,7 +29,7 @@ it ('should be return error when required attributes is missing on register', fu
     ]);
 });
 
-it ('should be return success when admin sign in successfully', function () {
+it('should be return success when admin sign in successfully', function () {
     $admin = Admin::factory()->create();
     $response = $this->request('POST', '/api/admin/login', [
         'email' => $admin->first()->email,

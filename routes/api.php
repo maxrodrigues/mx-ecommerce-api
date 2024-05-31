@@ -17,7 +17,6 @@ Route::post('login', LoginController::class);
 Route::post('admin/login', AdminAuthController::class);
 Route::post('admin/register', AdminRegisterController::class);
 
-
 Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function () {
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::put('products/{sku}', [ProductController::class, 'update'])->name('products.update');
