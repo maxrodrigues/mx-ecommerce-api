@@ -251,25 +251,22 @@
                 ]
             }
         },
-        "/api/product-detail": {
+        "/api/product-detail/{sku}": {
             "get": {
                 "tags": [
                     "Product"
                 ],
                 "description": "Returns the details of a product",
-                "operationId": "5a3b16604c5bf2aedb50ece076ae7aee",
-                "parameters": [
-                    {
-                        "parameter": "sku",
-                        "name": "sku",
-                        "in": "query",
-                        "description": "Product sku",
-                        "required": true
-                    }
-                ],
+                "operationId": "18742a579e4f4756e51a2666e4bf2f95",
                 "responses": {
                     "200": {
                         "description": "OK"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 },
                 "security": [
