@@ -199,4 +199,13 @@ it ('should return success when the product is deleted successfully', function (
     $this->assertDatabaseMissing('products', $product->first()->toArray());
 });
 
-todo('should return an error when the product is not deleted');
+it ('should return an error when the product is not deleted', function () {
+    setUser();
+    $response = $this->request('DELETE', '/api/products/1234567890125');
+    $response->assertStatus(Response::HTTP_NOT_FOUND)
+        ->assertJson([
+            'data' => [
+                'message' => 'Product not found or not deleted',
+            ],
+        ]);
+});

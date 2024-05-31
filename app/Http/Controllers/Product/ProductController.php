@@ -164,6 +164,14 @@ class ProductController extends Controller
                 ->where('sku', $sku)
                 ->delete();
 
+            if (! $product) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'Product not found or not deleted',
+                    ]
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             return new JsonResponse([
                 'data' => [
                     'message' => 'Product deleted successfully',
