@@ -22,7 +22,7 @@ class ProductsByCategoryController extends Controller
                 'data' => [
                     'products' => $products->toArray(),
                     'message' => 'Products list retrieved successfully',
-                ]
+                ],
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             return new JsonResponse([

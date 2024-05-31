@@ -78,9 +78,7 @@ it('should be return products when search by category', function () {
         'category_id' => $category->first()->id,
     ]);
 
-    $response = $this->request('GET', '/api/products-by-category', [
-        'category' => $category->first()->id,
-    ]);
+    $response = $this->request('GET', '/api/products-by-category/' . $category->first()->id);
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
