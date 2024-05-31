@@ -123,4 +123,39 @@ class ProductController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function update(Request $request, $sku): JsonResponse
+    {
+        try {
+            $product = Product::query()
+                ->where('sku', $sku)
+                ->first();
+
+            $product->fill($request->all());
+            $product->save();
+
+            /*if (! $update) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'Product not found or not updated',
+                    ]
+                ], Response::HTTP_NOT_FOUND);
+            }*/
+
+
+
+            return new JsonResponse([
+                'data' => [
+                    'message' => 'Product updated successfully',
+                    'product' => $product->toArray(),
+                ]
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return new JsonResponse([
+                'data' => [
+                    'message' => $e->getMessage(),
+                ]
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
