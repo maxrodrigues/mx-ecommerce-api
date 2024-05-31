@@ -184,5 +184,19 @@ it ('should return an error when the product is not updated', function () {
             ],
         ]);
 });
-todo('should return success when the product is deleted successfully');
+
+//DELETE
+it ('should return success when the product is deleted successfully', function () {
+    setUser();
+    $product = createProduct();
+    $response = $this->request('DELETE', '/api/products/' . $product->first()->sku);
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'message' => 'Product deleted successfully',
+            ],
+        ]);
+    $this->assertDatabaseMissing('products', $product->first()->toArray());
+});
+
 todo('should return an error when the product is not deleted');

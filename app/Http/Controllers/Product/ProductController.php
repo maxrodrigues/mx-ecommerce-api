@@ -156,4 +156,25 @@ class ProductController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy($sku): JsonResponse
+    {
+        try {
+            $product = Product::query()
+                ->where('sku', $sku)
+                ->delete();
+
+            return new JsonResponse([
+                'data' => [
+                    'message' => 'Product deleted successfully',
+                ]
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return new JsonResponse([
+                'data' => [
+                    'message' => $e->getMessage(),
+                ]
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
