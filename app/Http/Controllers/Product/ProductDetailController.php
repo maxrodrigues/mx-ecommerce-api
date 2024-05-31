@@ -28,11 +28,11 @@ class ProductDetailController extends Controller
             new OA\Response(response: Response::HTTP_OK, description: 'OK'),
         ]
     )]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, $sku): JsonResponse
     {
         try {
             $product = Product::query()
-                ->where('sku', $request->sku)
+                ->where('sku', $sku)
                 ->first();
 
             if (! $product) {

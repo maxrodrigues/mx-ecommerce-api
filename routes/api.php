@@ -14,6 +14,6 @@ Route::post('login', LoginController::class);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
-    Route::get('product-detail', ProductDetailController::class);
-    Route::get('products-by-category', ProductsByCategoryController::class);
+    Route::get('product-detail/{sku}', ProductDetailController::class);
+    Route::get('products-by-category/{category}', ProductsByCategoryController::class);
 });

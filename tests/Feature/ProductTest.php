@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
+
 use function Pest\Laravel\actingAs;
 
 function setUser(): void
@@ -45,9 +46,7 @@ it('should return the details of a product', function () {
         'sku' => '1234567890123',
     ]);
 
-    $response = $this->request('GET', '/api/product-detail', [
-        'sku' => '1234567890123',
-    ]);
+    $response = $this->request('GET', '/api/product-detail/1234567890123');
 
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
@@ -74,7 +73,7 @@ it('should be return error when product not found', function () {
         ]);
 });
 
-it ('should be return products when search by category', function () {
+it('should be return products when search by category', function () {
     setUser();
     $category = \App\Models\Category::factory()->create();
     $products = createProduct(2, [
@@ -94,7 +93,7 @@ it ('should be return products when search by category', function () {
 });
 
 //STORE
-it ('return success when receiving all the attributes necessary to register the product', function () {
+it('return success when receiving all the attributes necessary to register the product', function () {
     setUser();
     $category = \App\Models\Category::factory()->create();
     $response = $this->request('POST', '/api/products', [
@@ -114,7 +113,7 @@ it ('return success when receiving all the attributes necessary to register the 
         ]);
 });
 
-it ('return error when required attributes are not sent', function () {
+it('return error when required attributes are not sent', function () {
     setUser();
     $response = $this->request('POST', '/api/products');
     $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
@@ -129,11 +128,11 @@ it ('return error when required attributes are not sent', function () {
                     'price' => ['The price field is required.'],
                     'stock' => ['The stock field is required.'],
                 ],
-            ]
+            ],
         ]);
 });
 
-it ('return error when trying to register a product already exists', function () {
+it('return error when trying to register a product already exists', function () {
     setUser();
     $product = createProduct();
 
@@ -145,7 +144,7 @@ it ('return error when trying to register a product already exists', function ()
                 'errors' => [
                     'sku' => ['The sku has already been taken.'],
                 ],
-            ]
+            ],
         ]);
 });
 
