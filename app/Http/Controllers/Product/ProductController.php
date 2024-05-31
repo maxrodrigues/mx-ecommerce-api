@@ -127,6 +127,15 @@ class ProductController extends Controller
     public function update(Request $request, $sku): JsonResponse
     {
         try {
+            $data = Validator::make($request->all(), [
+                'name' => 'sometimes|min:3|max:255',
+                'description' => 'sometimes|min:3|max:255',
+                'category_id' => 'sometimes|exists:categories,id',
+                'sku' => 'sometimes|min:3|max:255|unique:products,sku',
+                'price' => 'sometimes|numeric',
+                'stock' => 'sometimes|numeric',
+            ]);
+
             $product = Product::query()
                 ->where('sku', $sku)
                 ->first();
@@ -139,7 +148,7 @@ class ProductController extends Controller
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            $product->fill($request->all());
+            $product->fill($data->validated());
             $product->save();
 
             return new JsonResponse([
