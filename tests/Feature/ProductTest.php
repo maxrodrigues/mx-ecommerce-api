@@ -92,6 +92,8 @@ todo ('should be return products when search by category', function () {
 });
 
 //STORE
+todo('only admin users can create products');
+
 it ('return success when receiving all the attributes necessary to register the product', function () {
     $user = createUserAdmin();
     $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
@@ -173,6 +175,8 @@ it ('return error when trying to register a product already exists', function ()
 });
 
 //UPDATE
+todo('only admin users can update products');
+
 it ('return success and product detail when updated successfully', function () {
     $user = createUserAdmin();
     $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
@@ -230,6 +234,8 @@ it ('should return an error when the product is not updated', function () {
 });
 
 //DELETE
+todo('only admin users can delete products');
+
 it ('should return success when the product is deleted successfully', function () {
     $user = createUserAdmin();
     $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
