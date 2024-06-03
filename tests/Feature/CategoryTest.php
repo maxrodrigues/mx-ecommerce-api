@@ -39,10 +39,19 @@ it('only admin users can access the list', function () {
     $response->assertStatus(Response::HTTP_OK);
 });
 
-todo ('return list of categories', function () {
-    $user = User::factory()->create();
+it ('return list of categories', function () {
+    $user = createUserAdmin();
     $categories = Category::factory(10)->create();
-    $response = $this->actingAs($user)->request('GET', '/api/categories');
+    $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
+        'email' => $user['email'],
+        'password' => 'password',
+    ]);
+
+    $token = json_decode($login->content(), true)['data']['token'];
+
+    $response = $this->request(method: 'GET', uri: '/api/categories', headers: [
+        'Authorization' => 'Bearer ' . $token
+    ]);
     $response->assertStatus(Response::HTTP_OK)
         ->assertJson([
             'data' => [
