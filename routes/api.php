@@ -22,14 +22,15 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
     Route::put('products/{sku}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{sku}', [ProductController::class, 'destroy'])->name('products.delete');
 
+    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('categories/{category_id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('categories/{category_id}', [CategoryController::class, 'destroy'])->name('categories.delete');
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+/*Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::get('product-detail/{sku}', ProductDetailController::class);
     Route::get('products-by-category/{category}', ProductsByCategoryController::class);
-});
+});*/
