@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductDetailController;
 use App\Http\Controllers\Product\ProductsByCategoryController;
+use App\Http\Controllers\Tags\TagController;
 use App\Http\Middleware\AdminUserMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('categories/{category_id}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('categories/{category_id}', [CategoryController::class, 'destroy'])->name('categories.delete');
+
+    Route::post('tags', [TagController::class, 'store'])->name('tags.store');
 });
 
 /*Route::middleware(['auth:sanctum'])->group(function () {
