@@ -40,3 +40,28 @@ it ('return error when required attributes is missing', function () {
             ],
         ]);
 });
+
+it('return success when tag is updated', function () {
+    $user = createUserAdmin();
+    $tag = \App\Models\Tag::factory()->create()->first();
+    $login = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $user['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($login->content(), true)['data']['token'];
+    $response = $this->request(method: 'PUT', uri: "/api/tags/{$tag->id}", data: [
+        'name' => 'Tag Test Update'
+    ], headers: [
+        'Authorization' => 'Bearer ' . $token,
+    ]);
+
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'message' => 'Tag updated successfully',
+            ]
+        ]);
+    $this->assertDatabaseHas('tags', [
+        'name' => 'Tag Test Update'
+    ]);
+});
