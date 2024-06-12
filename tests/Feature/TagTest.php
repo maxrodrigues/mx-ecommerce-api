@@ -65,3 +65,43 @@ it('return success when tag is updated', function () {
         'name' => 'Tag Test Update'
     ]);
 });
+
+it ('return success when tag is deleted', function () {
+    $user = createUserAdmin();
+    $tag = \App\Models\Tag::factory()->create()->first();
+    $login = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $user['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($login->content(), true)['data']['token'];
+    $response = $this->request(method: 'DELETE', uri: "/api/tags/{$tag->id}", headers: [
+        'Authorization' => 'Bearer ' . $token,
+    ]);
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'message' => 'Tag deleted successfully',
+            ]
+        ]);
+    $this->assertDatabaseMissing('tags', [
+        'id' => $tag->id
+    ]);
+});
+
+it ('return error when tag is not found', function () {
+    $user = createUserAdmin();
+    $login = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $user['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($login->content(), true)['data']['token'];
+    $response = $this->request(method: 'DELETE', uri: "/api/tags/1234567890125", headers: [
+        'Authorization' => 'Bearer ' . $token,
+    ]);
+    $response->assertStatus(Response::HTTP_NOT_FOUND)
+        ->assertJson([
+            'data' => [
+                'message' => 'Tag not found',
+            ]
+        ]);
+});

@@ -89,4 +89,30 @@ class TagController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy($id): JsonResponse
+    {
+        try {
+            $tag = Tag::where('id', $id)->delete();
+            if (! $tag) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'Tag not found',
+                    ],
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return new JsonResponse([
+                'data' => [
+                    'message' => 'Tag deleted successfully',
+                ]
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return new JsonResponse([
+                'data' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

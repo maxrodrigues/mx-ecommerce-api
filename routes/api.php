@@ -30,6 +30,7 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
 
     Route::post('tags', [TagController::class, 'store'])->name('tags.store');
     Route::put('tags/{tag_id}', [TagController::class, 'update'])->name('tags.update');
+    Route::delete('tags/{tag_id}', [TagController::class, 'destroy'])->name('tags.delete');
 });
 
 /*Route::middleware(['auth:sanctum'])->group(function () {
