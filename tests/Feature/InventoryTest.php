@@ -24,3 +24,26 @@ it ('should be return success when the stock is updated', function () {
         ]);
     $this->assertDatabaseHas('products', $attributes);
 });
+
+it ('should be return error when not send stock', function () {
+    $product = createProduct();
+    $admin = createUserAdmin();
+    $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
+        'email' => $admin['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($login->content(), true)['data']['token'];
+    $response = $this->request(method: 'PUT', uri: '/api/inventory/'.$product->first()->sku, headers: [
+        'Authorization' => 'Bearer ' . $token,
+    ]);
+
+    $response->assertStatus(\Symfony\Component\HttpFoundation\Response::HTTP_UNPROCESSABLE_ENTITY)
+        ->assertJson([
+            'data' => [
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'stock' => ['The stock field is required.']
+                ]
+            ],
+        ]);
+});

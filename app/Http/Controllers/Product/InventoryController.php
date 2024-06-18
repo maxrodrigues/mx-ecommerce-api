@@ -14,6 +14,19 @@ class InventoryController extends Controller
     public function __invoke(Request $request, $sku): JsonResponse
     {
         try {
+            $data = Validator::make($request->all(), [
+                'stock' => 'required|integer|min:0',
+            ]);
+
+            if ($data->fails()) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'The given data was invalid.',
+                        'errors' => $data->errors(),
+                    ]
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
             $product = Product::where('sku', $sku)->first();
             $product->fill($request->all());
             $product->save();
