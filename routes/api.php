@@ -22,6 +22,8 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::put('products/{sku}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{sku}', [ProductController::class, 'destroy'])->name('products.delete');
+    Route::put('inventory/{sku}', \App\Http\Controllers\Product\InventoryController::class)->name('inventory.update');
+
 
     Route::get('categories/{parent_id?}', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
