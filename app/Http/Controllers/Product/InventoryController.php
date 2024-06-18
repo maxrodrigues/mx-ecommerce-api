@@ -28,6 +28,15 @@ class InventoryController extends Controller
             }
 
             $product = Product::where('sku', $sku)->first();
+
+            if(! $product) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'Product not found',
+                    ],
+                ], Response::HTTP_NOT_FOUND);
+            }
+
             $product->fill($request->all());
             $product->save();
 

@@ -47,3 +47,25 @@ it ('should be return error when not send stock', function () {
             ],
         ]);
 });
+
+it ('should be return error when product not found', function () {
+    $admin = createUserAdmin();
+    $login = $this->request(method: 'POST', uri: '/api/admin/login', data: [
+        'email' => $admin['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($login->content(), true)['data']['token'];
+    $attributes = [
+        'stock' => 9999,
+    ];
+    $response = $this->request(method: 'PUT', uri: '/api/inventory/123', data: $attributes, headers: [
+        'Authorization' => 'Bearer ' . $token,
+    ]);
+
+    $response->assertStatus(\Symfony\Component\HttpFoundation\Response::HTTP_NOT_FOUND)
+        ->assertJson([
+            'data' => [
+                'message' => 'Product not found'
+            ],
+        ]);
+});
