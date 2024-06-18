@@ -67,7 +67,7 @@ class LoginController extends Controller
             return new JsonResponse([
                 'data' => [
                     'message' => 'Successfully logged in.',
-                    'token' => $user->createToken($request->email)->plainTextToken,
+                    'token' => $user->createToken('SaleSync User', ['role:user'])->plainTextToken,
                 ],
             ], Response::HTTP_OK);
         } catch (\Exception $e) {

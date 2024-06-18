@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminUserMiddleware
@@ -16,7 +19,8 @@ class AdminUserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! auth()->user()->tokenCan('role:admin')) {
+        $token = PersonalAccessToken::findToken(Str::of($request->header()['authorization'][0])->explode(" ")[1]);
+        if ($token->abilities[0] !== 'role:admin') {
             return new JsonResponse([
                 'data' => [
                     'message' => 'Unauthorized',
