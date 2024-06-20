@@ -11,6 +11,7 @@
 |
 */
 
+use App\Models\Offer;
 use App\Models\User;
 
 uses(
@@ -47,4 +48,8 @@ expect()->extend('toBeOne', function () {
 function createUser(): array
 {
     return User::factory()->create()->first()->toArray();
+}
+
+function createOffer() {
+    return Offer::factory()->create();
 }

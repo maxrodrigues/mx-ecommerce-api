@@ -96,7 +96,7 @@ it ('should be return error when required parameter is missing', function () {
 
 it ('should be return success when update an offer', function () {
     $adminUser = createUserAdmin();
-    $offer = Offer::factory()->create();
+    $offer = createOffer();
     $startAt = now()->addDays(5)->format('Y-m-d H:i:s');
     $finishAt = now()->addDays(15)->format('Y-m-d H:i:s');
 

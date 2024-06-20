@@ -50,6 +50,12 @@ class OfferController extends Controller
     public function update(Request $request, $offer_id): JsonResponse
     {
         try {
+            $data = Validator::make($request->all(), [
+                'discount' => 'required|numeric',
+                'start_at' => 'required|date',
+                'finish_at' => 'required|date',
+            ]);
+
             $offer = Offer::where('id', $offer_id)->first();
 
             if (! $offer) {
@@ -61,7 +67,7 @@ class OfferController extends Controller
 
             }
 
-            $offer->fill($request->all());
+            $offer->fill($data->validated());
             $offer->save();
 
             return new JsonResponse([
