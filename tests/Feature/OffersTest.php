@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Offer;
 use Symfony\Component\HttpFoundation\Response;
 
 it ('only admin users can create offers', function () {
@@ -90,5 +91,57 @@ it ('should be return error when required parameter is missing', function () {
                     ]
                 ]
             ],
+        ]);
+});
+
+it ('should be return success when update an offer', function () {
+    $adminUser = createUserAdmin();
+    $offer = Offer::factory()->create();
+    $startAt = now()->addDays(5)->format('Y-m-d H:i:s');
+    $finishAt = now()->addDays(15)->format('Y-m-d H:i:s');
+
+    $adminLogin = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $adminUser['email'],
+        'password' => 'password',
+    ]);
+    $token = json_decode($adminLogin->content(), true)['data']['token'];
+    $response = $this->request(method: 'PUT', uri: 'api/offers/' . $offer->id, data: [
+        'discount' => 12,
+        'start_at' => $startAt,
+        'finish_at' => $finishAt,
+    ], headers: [
+        'Authorization' => 'Bearer ' . $token
+    ]);
+
+    $response->assertStatus(Response::HTTP_OK)
+        ->assertJson([
+            'data' => [
+                'message' => 'Offer updated successfully'
+            ]
+        ]);
+    $this->assertDatabaseHas('offers', [
+        'id' => $offer->id,
+        'code' => $offer->code,
+        'discount' => 12,
+        'start_at' => $startAt,
+        'finish_at' => $finishAt,
+    ]);
+});
+
+it ('should be return error when offers is not found', function () {
+    $adminUser = createUserAdmin();
+    $adminLogin = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $adminUser['email'],
+        'password' => 'password',
+    ]);
+    $adminToken = json_decode($adminLogin->content(), true)['data']['token'];
+    $adminRequest = $this->request(method: 'PUT', uri: 'api/offers/1', headers: [
+        'Authorization' => 'Bearer ' . $adminToken
+    ]);
+    $adminRequest->assertStatus(Response::HTTP_NOT_FOUND)
+        ->assertJson([
+            'data' => [
+                'message' => 'Offer not found'
+            ]
         ]);
 });
