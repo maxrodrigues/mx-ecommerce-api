@@ -145,3 +145,21 @@ it ('should be return error when offers is not found', function () {
             ]
         ]);
 });
+
+it ('should be return success when remove offer', function () {
+    $adminUser = createUserAdmin();
+    $offer = createOffer();
+    $adminLogin = $this->request(method: 'POST', uri: 'api/admin/login', data: [
+        'email' => $adminUser['email'],
+        'password' => 'password',
+    ]);
+    $adminToken = json_decode($adminLogin->content(), true)['data']['token'];
+    $adminRequest = $this->request(method: 'DELETE', uri: 'api/offers/' . $offer->id, headers: [
+        'Authorization' => 'Bearer ' . $adminToken
+    ]);
+
+    $adminRequest->assertStatus(Response::HTTP_NO_CONTENT);
+    $this->assertSoftDeleted('offers', [
+        'id' => $offer->id
+    ]);
+});

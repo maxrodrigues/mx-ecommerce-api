@@ -83,4 +83,27 @@ class OfferController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy($offer_id): JsonResponse
+    {
+        try {
+            $offer = Offer::where('id', $offer_id)->delete();
+
+            if (! $offer) {
+                return new JsonResponse([
+                    'data' => [
+                        'message' => 'Offer not found'
+                    ]
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        } catch (Exception $e) {
+            return new JsonResponse([
+                'data' => [
+                    'message' => $e->getMessage()
+                ]
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

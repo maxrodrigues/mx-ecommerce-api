@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
 
     Route::post('offers', [OfferController::class, 'store'])->name('offers.store');
     Route::put('offers/{offer_id}', [OfferController::class, 'update'])->name('offers.update');
+    Route::delete('offers/{offer_id}', [OfferController::class, 'destroy'])->name('offers.destroy');
 });
 
 /*Route::middleware(['auth:sanctum'])->group(function () {
