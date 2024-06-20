@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AdminRegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Offer\OfferController;
+use App\Http\Controllers\Product\InventoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\ProductDetailController;
 use App\Http\Controllers\Product\ProductsByCategoryController;
@@ -22,7 +24,7 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
     Route::put('products/{sku}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{sku}', [ProductController::class, 'destroy'])->name('products.delete');
-    Route::put('inventory/{sku}', \App\Http\Controllers\Product\InventoryController::class)->name('inventory.update');
+    Route::put('inventory/{sku}', InventoryController::class)->name('inventory.update');
 
 
     Route::get('categories/{parent_id?}', [CategoryController::class, 'index'])->name('categories.index');
@@ -33,6 +35,8 @@ Route::middleware(['auth:sanctum', AdminUserMiddleware::class])->group(function 
     Route::post('tags', [TagController::class, 'store'])->name('tags.store');
     Route::put('tags/{tag_id}', [TagController::class, 'update'])->name('tags.update');
     Route::delete('tags/{tag_id}', [TagController::class, 'destroy'])->name('tags.delete');
+
+    Route::post('offers', [OfferController::class, 'store'])->name('offers.store');
 });
 
 /*Route::middleware(['auth:sanctum'])->group(function () {

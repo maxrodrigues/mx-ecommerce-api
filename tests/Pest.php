@@ -11,6 +11,8 @@
 |
 */
 
+use App\Models\User;
+
 uses(
     Tests\TestCase::class,
     Illuminate\Foundation\Testing\RefreshDatabase::class,
@@ -42,7 +44,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function createUser(): array
 {
-    // ..
+    return User::factory()->create()->first()->toArray();
 }
