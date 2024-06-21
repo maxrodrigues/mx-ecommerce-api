@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -11,13 +14,7 @@
 |
 */
 
-use App\Models\Offer;
-use App\Models\User;
-
-uses(
-    Tests\TestCase::class,
-    Illuminate\Foundation\Testing\RefreshDatabase::class,
-)->in('Feature');
+uses(TestCase::class, RefreshDatabase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -45,11 +42,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function createUser(): array
+function something()
 {
-    return User::factory()->create()->first()->toArray();
-}
-
-function createOffer() {
-    return Offer::factory()->create();
+    // ..
 }
